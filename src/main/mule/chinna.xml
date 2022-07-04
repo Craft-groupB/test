@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="chinnaFlow" doc:id="be00976f-3e40-4004-9775-79bac2e9b653" >
+		<ee:transform doc:name="Transform Message" doc:id="f2c1de4a-cb0b-4c9c-a732-c91729c14088" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload , indexOfPayload01 ) -> {
+	catagoryid: payload.catagoryid,
+	description: payload.description,
+	name: payload.name,
+	price: payload.price,
+	productid: payload.productid,
+	video_url: payload.video_url
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="chinnaFlow1" doc:id="b98efb24-0e76-45b7-8470-1acf1e02ccab" >
+		<ee:transform doc:name="Transform Message" doc:id="f41e020d-8c0b-42e4-8370-36522226b866" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+output application/java
+
+---
+{
+	"todayDate": now()as Date {format:"yyyy-mm-dd"},
+	"todayTime": now()as Time {format:"HH:mm:SS.SSS"},
+	"currentHour":now()as Time {format:"HH"},
+	"currentDateTime": now() as LocalDateTime {format: "yyyy-mm-dd HH:mm:SS.SSS"},
+	"UTCTime": ((now() >> "UTC")>> "IST")as DateTime{format:"yyyy-mm-dd HH:mm:SS.SSS"},
+	"ESTTime": (now() >> "EST"),
+	"ISTTime": (now()>> "IST")
+	}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
